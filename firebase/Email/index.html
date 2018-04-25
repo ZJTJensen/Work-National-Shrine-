@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+  
+    <script>
+    
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyCXCgUKMjIIZkC_2zC0zdyvZg6SoJDfdlU",
+        authDomain: "emails-9b0c4.firebaseapp.com",
+        databaseURL: "https://emails-9b0c4.firebaseio.com",
+        projectId: "emails-9b0c4",
+        storageBucket: "emails-9b0c4.appspot.com",
+        messagingSenderId: "585604052594"
+    };
+    firebase.initializeApp(config);
+
+    // Get a reference to the database service
+    var database = firebase.database().ref().child('Emails'); 
+
+    database.once("value", function(snapshot){
+            if(snapshot.exists()){
+            var content = ""
+            snapshot.forEach(function(data){
+                var name_val = data.val().Name;
+                var email_val = data.val().Email;
+                content += "<tr><td>"+ name_val+"</td><td>"+email_val+"</td></tr>";
+
+            });
+            $('#test').append(content)
+        }
+        });
+
+    </script>
+    <style>
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
+            
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+            
+            tr:nth-child(even) {
+                background-color: #dddddd;
+            }
+            </style>
+</head>
+<body>
+    
+
+    <form>
+        <input type="text" id="name" name ="name">
+        <input type="text" id="email" name="email">
+        <input type="button" value="Submit" id="theButton">
+    </form>
+
+
+    <div id = "EmailCont">
+        <table id="test">
+            <tr>
+                <th>Name:</th>
+                <th>Email:</th>
+            </tr>  
+        </table>
+
+    </div>
+</body>
+</html>
