@@ -1,28 +1,22 @@
 
-    // Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyCXCgUKMjIIZkC_2zC0zdyvZg6SoJDfdlU",
-        authDomain: "emails-9b0c4.firebaseapp.com",
-        databaseURL: "https://emails-9b0c4.firebaseio.com",
-        projectId: "emails-9b0c4",
-        storageBucket: "emails-9b0c4.appspot.com",
-        messagingSenderId: "585604052594"
-    };
-    firebase.initializeApp(config);
-
     // Get a reference to the database service
-    var emailDataRef = firebase.database().ref('emails'); 
+    var database = firebase.database().ref(); 
+    database.on('value', snap => {
+        console.log(snap.val()); 
+    });
 
-    emailDataRef.once("value", function(snapshot){
-            if(snapshot.exists()){
+        database.once("value")
+        .then(function(snapshot){
             var content = ""
-            snapshot.forEach(function(childSnapshot){
-
-                var name_val = childSnapshot.val().Name;
-                var email_val = childSnapshot.val().Email;
-                content += "<tr><td>"+ name_val+"</td><td>"+email_val+"</td></tr>";
-
+            console.log(snapshot)
+            snapshot.forEach(function(data){
+                var key = data.key;
+                var emailData = data.val();
+                var name_val = data.val().Name;
+                var email_val = data.val().Email;
+                $('#test').append( "<tr><td>"+ name_val+"</td><td>"+email_val+"</td></tr>")
+                
             });
-            $('#test').append(content)
-        }
+            
+            
         });
